@@ -1,0 +1,2433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FurAffinity Userpage Preview Tool</title>
+    <!-- Google Fonts & Bootstrap Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <style>
+        /* ==========================================
+           1. FURAFFINITY CORE LAYOUT & THEME (DARK)
+           ========================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* CUSTOM SLEEK SCROLLBARS */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #181a20;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3d414d;
+            border-radius: 4px;
+            border: 1px solid #282a32;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555c6c;
+        }
+
+        body {
+            background-color: #1b1d21;
+            color: rgba(255, 255, 255, 0.92);
+            font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+            font-size: 15px;
+            line-height: 1.25;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: #cfcfcf;
+            text-decoration: none;
+            transition: color 0.15s ease-in-out;
+        }
+        a:hover {
+            color: #add8f5;
+            text-decoration: underline;
+        }
+
+        .highlight, .highlight a {
+            color: #add8f5 !important;
+        }
+
+        .font-small {
+            font-size: 12px;
+            color: #a0a4ac;
+        }
+
+        .aligncenter {
+            text-align: center;
+        }
+        .floatright {
+            float: right;
+        }
+        .clear {
+            clear: both;
+        }
+
+        /* 2. TOP WARNING NOTICE BAR */
+        #local-warning-bar {
+            background-color: #3b2c00;
+            border-bottom: 2px solid #f39c12;
+            color: #f1c40f;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            line-height: 1.4;
+        }
+
+        #fa-fetcher-bar {
+            background-color: #121418;
+            border-bottom: 1px solid #2b2d35;
+            padding: 10px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .fetcher-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: #add8f5;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .fetcher-inputs {
+            display: flex;
+            gap: 8px;
+            flex-grow: 1;
+            max-width: 580px;
+        }
+
+        .fetcher-inputs input {
+            flex-grow: 1;
+            background: #202228;
+            border: 1px solid #3d414d;
+            border-radius: 4px;
+            color: #ffffff;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-family: inherit;
+        }
+        .fetcher-inputs input:focus {
+            outline: none;
+            border-color: #add8f5;
+        }
+
+        .btn-fa {
+            background-color: #377d4c;
+            color: #ffffff;
+            border: 1px solid #48a063;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+        .btn-fa:hover {
+            background-color: #2e6940;
+        }
+
+        .btn-secondary-fa {
+            background-color: #363942;
+            color: #d0d0d0;
+            border: 1px solid #484d5a;
+        }
+        .btn-secondary-fa:hover {
+            background-color: #484d5a;
+            color: #fff;
+        }
+
+        /* FA Mock Top Navbar */
+        #fa-site-nav {
+            background-color: #282a2f;
+            border-bottom: 1px solid #363942;
+            padding: 8px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+        .fa-logo {
+            font-weight: 800;
+            font-size: 18px;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+        .fa-logo span {
+            color: #fa9b3c;
+        }
+        .fa-nav-links {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+        }
+        .fa-nav-links a {
+            color: #d0d0d0;
+            font-weight: 600;
+        }
+
+        /* MAIN CONTAINER (FA SIZES & SPACING) */
+        #main-window {
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 0 10px 40px 10px;
+        }
+
+        /* EDITABLE IMAGE WRAPPER */
+        .editable-image-wrapper {
+            position: relative;
+            cursor: pointer;
+            display: inline-block;
+            width: 100%;
+        }
+        .editable-image-wrapper::after {
+            content: "📷 Click to Change Image";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.68);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+            border-radius: inherit;
+        }
+        .editable-image-wrapper:hover::after {
+            opacity: 1;
+        }
+
+        /* RESTRICTED EDITABLE AREAS */
+        .editable-bbcode-allowed {
+            position: relative;
+            cursor: pointer;
+            border: 1px dashed rgba(173, 216, 245, 0.3);
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .editable-bbcode-allowed:hover {
+            border-color: #add8f5;
+            background: rgba(173, 216, 245, 0.08);
+        }
+        .editable-bbcode-allowed::before {
+            content: "✏️ Edit BBCode";
+            position: absolute;
+            top: -10px;
+            right: 0;
+            background: #add8f5;
+            color: #111;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 3px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            z-index: 10;
+        }
+        .editable-bbcode-allowed:hover::before {
+            opacity: 1;
+        }
+
+        .editable-plaintext-allowed {
+            position: relative;
+            cursor: pointer;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            padding: 1px 4px;
+            border-radius: 3px;
+            transition: border-color 0.2s;
+        }
+        .editable-plaintext-allowed:hover {
+            border-color: #fa9b3c;
+            background: rgba(250, 155, 60, 0.1);
+        }
+
+        /* BANNER */
+        site-banner {
+            display: block;
+            width: 100%;
+            margin-bottom: 12px;
+            border-radius: 4px;
+            overflow: hidden;
+            background-color: #282a2f;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+        site-banner img {
+            width: 100%;
+            max-height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* USER HEADER NAV */
+        userpage-nav-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            background-color: #363942;
+            border-radius: 4px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            gap: 15px;
+        }
+
+        userpage-nav-avatar {
+            flex-shrink: 0;
+        }
+        userpage-nav-avatar img {
+            width: 100px;
+            height: 100px;
+            border-radius: 4px;
+            object-fit: cover;
+            border: 2px solid #484d59;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        userpage-nav-user-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .c-usernameBlock {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+        .c-usernameBlock__displayName {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff !important;
+        }
+        .c-usernameBlock__userName {
+            font-size: 14px;
+            color: #90949c !important;
+        }
+        .c-usernameBlock__symbol {
+            color: #fa9b3c;
+            font-weight: bold;
+        }
+
+        .user-title {
+            color: #b0b4bc;
+            font-size: 13px;
+        }
+
+        .user-nav-page-links {
+            list-style: none;
+            display: flex;
+            gap: 18px;
+            margin-top: 8px;
+        }
+        .user-nav-page-links li h3 {
+            font-size: 15px;
+            font-weight: 600;
+        }
+        .user-nav-page-links a {
+            color: #c0c4cc;
+        }
+        .user-nav-page-links a.current {
+            color: #add8f5 !important;
+            border-bottom: 2px solid #add8f5;
+            padding-bottom: 2px;
+        }
+
+        userpage-nav-interface-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .button.standard {
+            background-color: #484d5a;
+            color: #ffffff;
+            border: 1px solid #5a6070;
+            padding: 7px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .button.standard:hover {
+            background-color: #555c6c;
+            text-decoration: none;
+        }
+        .button.standard.go {
+            background-color: #377d4c;
+            border-color: #43965c;
+        }
+        .button.standard.go:hover {
+            background-color: #2e6940;
+        }
+
+        /* SECTION CARDS (FA SIZES & SPACING) */
+        .section-header {
+            background-color: #363942;
+            padding: 10px 14px;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+            border-bottom: 1px solid #2b2d35;
+        }
+        .section-header h2 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        .section-header h3 a {
+            font-size: 13px;
+            font-weight: 600;
+            color: #add8f5;
+        }
+
+        .section-body {
+            background-color: #2e3037;
+            padding: 14px 16px;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            line-height: 1.25;
+        }
+
+        /* USER DESCRIPTION SECTION */
+        .userpage-layout-profile {
+            margin-bottom: 15px;
+        }
+        .userpage-profile {
+            border-radius: 4px;
+            word-wrap: break-word;
+            line-height: 1.2;
+            font-size: 14px;
+        }
+
+        .userpage-profile code.bbcode {
+            font-family: monospace, Courier, sans-serif;
+            font-size: 13px;
+            line-height: 1.15;
+            letter-spacing: 0;
+            display: inline-block;
+        }
+
+        /* RATING BADGE */
+        .c-contentRating--general {
+            color: #5cdb95;
+            font-weight: bold;
+        }
+
+        /* ICON WARNING BADGE (INFORMATIONAL) */
+        .icon-warning-badge {
+            background-color: #5a3c00;
+            color: #ffe082;
+            border: 1px solid #ffb300;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* BBCODE HEADERS H1 - H5 STYLING */
+        .bbcode_h1 { font-size: 24px; font-weight: 700; margin: 8px 0; color: #ffffff; border-bottom: 1px solid #3d414d; padding-bottom: 4px; }
+        .bbcode_h2 { font-size: 20px; font-weight: 700; margin: 6px 0; color: #ffffff; }
+        .bbcode_h3 { font-size: 17px; font-weight: 600; margin: 5px 0; color: #add8f5; }
+        .bbcode_h4 { font-size: 15px; font-weight: 600; margin: 4px 0; color: #ffffff; }
+        .bbcode_h5 { font-size: 13px; font-weight: 600; margin: 3px 0; color: #a0a4ac; }
+
+        .bbcode_b { font-weight: bold; }
+        .bbcode_i { font-style: italic; }
+        .bbcode_u { text-decoration: underline; }
+        .bbcode_s { text-decoration: line-through; }
+        .bbcode_center { text-align: center; display: block; }
+        .bbcode_left { text-align: left; display: block; }
+        .bbcode_right { text-align: right; display: block; }
+        .bbcode_quote {
+            background: #25272e;
+            border-left: 4px solid #add8f5;
+            padding: 8px 14px;
+            margin: 6px 0;
+            border-radius: 0 4px 4px 0;
+            display: block;
+            line-height: 1.3;
+        }
+        .bbcode_quote_name {
+            font-weight: bold;
+            color: #add8f5;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .bbcode_hr {
+            border: 0;
+            height: 1px;
+            background: #484d59;
+            margin: 10px 0;
+            display: block;
+        }
+
+        /* USER ICON BADGES IN BBCODE */
+        .iconusername {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+            gap: 3px;
+        }
+        .iconusername img {
+            width: 20px;
+            height: 20px;
+            border-radius: 2px;
+            object-fit: cover;
+            vertical-align: middle;
+        }
+
+        /* GRID LAYOUT */
+        .userpage-layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 15px;
+        }
+
+        @media (max-width: 960px) {
+            .userpage-layout-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .userpage-left-col, .userpage-right-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Featured Submission */
+        .preview_img img {
+            max-width: 100%;
+            border-radius: 4px;
+            max-height: 480px;
+            object-fit: contain;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            background: #1e2025;
+        }
+
+        .userpage-featured-title h2 {
+            font-size: 17px;
+            margin-top: 8px;
+        }
+
+        /* Gallery & Faves Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .gallery-grid figure {
+            aspect-ratio: 16/9;
+            background: #202227;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #3d414d;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .gallery-grid figure:hover {
+            transform: scale(1.03);
+            border-color: #add8f5;
+        }
+        .gallery-grid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Watches Tables */
+        .watch-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .watch-table td {
+            padding: 5px 6px;
+            width: 33.33%;
+            font-size: 13px;
+        }
+
+        /* Stats Grid */
+        .stats-table {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* Profile & Social Contacts */
+        .profile-info-row {
+            padding: 5px 0;
+            border-bottom: 1px solid #383b44;
+            font-size: 13px;
+        }
+        .profile-info-row:last-child {
+            border-bottom: none;
+        }
+        .user-contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .user-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #25272e;
+            padding: 7px 10px;
+            border-radius: 4px;
+            border: 1px solid #363942;
+        }
+        .contact-icon {
+            font-size: 16px;
+            color: #add8f5;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* SHOUTS / COMMENTS */
+        .userpage-shouts-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .comment_container {
+            background: #25272e;
+            border: 1px solid #363942;
+            border-radius: 4px;
+            padding: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .comment-avatar img {
+            width: 50px;
+            height: 50px;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .comment-body {
+            flex-grow: 1;
+        }
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .comment-username {
+            font-weight: 700;
+            font-size: 13px;
+            color: #ffffff;
+        }
+        .comment-username .symbol {
+            color: #fa9b3c;
+        }
+        .comment-date {
+            font-size: 11px;
+            color: #90949c;
+        }
+        .comment-text {
+            font-size: 13px;
+            color: #d0d4dc;
+            word-break: break-word;
+            line-height: 1.35;
+        }
+
+        .shout-post-form {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .shout-post-form textarea {
+            width: 100%;
+            background: #202228;
+            border: 1px solid #3d414d;
+            border-radius: 4px;
+            color: #fff;
+            padding: 8px;
+            font-family: inherit;
+            font-size: 13px;
+            resize: vertical;
+        }
+
+        /* MODAL OVERLAY STYLES */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #202228;
+            border: 1px solid #3d414d;
+            border-radius: 6px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* FULLSCREEN 50/50 SPLIT MODAL FOR BBCODE EDITOR */
+        .modal-card.fullscreen-split {
+            width: 96vw;
+            height: 92vh;
+            max-width: 1600px;
+        }
+
+        .modal-header {
+            background: #282a32;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #363942;
+        }
+        .modal-header h3 {
+            font-size: 15px;
+            color: #add8f5;
+        }
+        .modal-close-btn {
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .modal-close-btn:hover { color: #fff; }
+
+        .modal-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        /* 50/50 SPLIT BODY CONTAINER */
+        .split-modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            flex-grow: 1;
+            height: 100%;
+            overflow: hidden;
+            padding: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .modal-overlay {
+                align-items: flex-start;
+                padding: 10px 0;
+            }
+            .modal-card.fullscreen-split {
+                width: 100vw;
+                height: auto;
+                min-height: calc(100vh - 20px);
+                max-width: 100vw;
+                border-radius: 0;
+            }
+            .split-modal-body {
+                grid-template-columns: 1fr;
+                display: flex;
+                flex-direction: column;
+                height: auto;
+                overflow: visible;
+                padding: 10px;
+            }
+            .split-left-pane {
+                height: auto;
+                overflow: visible;
+            }
+            #bbcode-editor-input {
+                min-height: 250px;
+                max-height: 55vh;
+                height: auto;
+                overflow-y: auto !important;
+                -webkit-overflow-scrolling: touch;
+                touch-action: pan-y;
+            }
+            .split-right-pane {
+                height: auto;
+                overflow: visible;
+                margin-top: 15px;
+            }
+            .split-right-pane .preview-scroll-box {
+                height: auto;
+                max-height: none;
+                overflow: visible;
+            }
+        }
+
+        .split-left-pane {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .split-right-pane {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .split-right-pane .preview-header {
+            font-size: 13px;
+            font-weight: 700;
+            color: #add8f5;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+        }
+
+        .split-right-pane .preview-scroll-box {
+            flex-grow: 1;
+            background: #2e3037;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #3d414d;
+            overflow-y: auto;
+            word-break: break-word;
+            line-height: 1.2;
+            font-size: 14px;
+        }
+
+        .modal-footer {
+            background: #181a20;
+            padding: 10px 18px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            border-top: 1px solid #282a32;
+        }
+
+        /* BBCODE TOOLBAR & DRAWERS */
+        .bbcode-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            background: #181a20;
+            padding: 6px;
+            border-radius: 4px;
+            border: 1px solid #333642;
+        }
+        .btn-bbcode {
+            background: #2c2f3a;
+            color: #e0e0e0;
+            border: 1px solid #404454;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: bold;
+            border-radius: 3px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .btn-bbcode:hover {
+            background: #3a3e4d;
+            color: #add8f5;
+        }
+        .btn-bbcode:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .tool-drawer {
+            background: #16181e;
+            border: 1px solid #2c2f3a;
+            border-radius: 4px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .tool-drawer label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #add8f5;
+            text-transform: uppercase;
+        }
+
+        /* NOTIFICATION TOAST */
+        #notification-toast {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #377d4c;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 13px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            z-index: 30000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        #notification-toast.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* FOOTER STYLING */
+        #site-footer {
+            background: #282a2f;
+            color: #aaa;
+            text-align: center;
+            padding: 12px;
+            font-size: 12px;
+            margin-top: auto;
+        }
+        #site-footer .footer-content a {
+            color: #add8f5;
+            margin: 0 5px;
+        }
+        #site-footer .footer-content a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NOTIFICATION TOAST -->
+    <div id="notification-toast"><i class="bi bi-check-circle-fill"></i> <span id="toast-text">Notification</span></div>
+
+    <!-- ==========================================
+         1. TOP PREVIEW NOTICE BANNER
+         ========================================== -->
+    <div id="local-warning-bar">
+        <i class="bi bi-info-circle-fill"></i>
+        <span data-i18n="warning_banner">This page is only meant for preview, the design itself is different, yet it make give the idea on how might look like, some changes require extra steps from the furaffinity's page itself, ya may look the how to do it</span>
+    </div>
+
+    <!-- ==========================================
+         2. FA PROFILE IMPORTER BAR
+         ========================================== -->
+    <div id="fa-fetcher-bar">
+        <div class="fetcher-inputs" style="display:flex; gap:8px; align-items:center; flex-grow:1; max-width:750px;">
+            <input type="text" id="fa-username-input" data-i18n="username_placeholder" placeholder="Enter username or URL (e.g. z3r0gt or furaffinity.net/user/z3r0gt)" style="flex-grow:1;">
+            <button class="btn-fa" onclick="fetchFAProfile()"><i class="bi bi-cloud-download"></i> <span data-i18n="fetch_btn">Fetch Profile</span></button>
+            <button class="btn-fa btn-secondary-fa" onclick="resetSampleData()"><i class="bi bi-arrow-counterclockwise"></i> <span data-i18n="reset_btn">Reset</span></button>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+            <select id="lang-select" style="background:#202228; border:1px solid #3d414d; color:#fff; padding:6px 12px; font-size:13px; border-radius:4px; cursor:pointer;" onchange="setLanguage(this.value)">
+                <option value="en">🇺🇸 English</option>
+                <option value="es">🇪🇸 Español</option>
+                <option value="it">🇮🇹 Italiano</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         3. FA SITE NAVIGATION HEADER MOCK
+         ========================================== -->
+    <nav id="fa-site-nav">
+        <div class="fa-logo">fur<span>affinity</span></div>
+        <ul class="fa-nav-links">
+            <li><a href="#">Browse</a></li>
+            <li><a href="#">Search</a></li>
+            <li><a href="#">Upload</a></li>
+        </ul>
+        <div>
+            <a href="#" style="font-weight: 600; color: #add8f5;">Log In</a> or <a href="#" style="font-weight: 600; color: #add8f5;">Register</a>
+        </div>
+    </nav>
+
+    <!-- ==========================================
+         4. MAIN USERPAGE CONTENT LAYOUT
+         ========================================== -->
+    <div id="main-window">
+
+        <!-- 1. BANNER -->
+        <div id="header" style="margin-top: 12px;">
+            <site-banner>
+                <div class="editable-image-wrapper" onclick="openImageEditor('profile-banner-img', 'Profile Banner Image')">
+                    <img id="profile-banner-img" src="https://d.furaffinity.net/art/z3r0gt/1770765980/profile_banner.jpg" alt="User Banner">
+                </div>
+            </site-banner>
+        </div>
+
+        <!-- 2. USER NAV & OPTIONS HEADER -->
+        <userpage-nav-header>
+            <userpage-nav-avatar>
+                <div class="editable-image-wrapper" onclick="openImageEditor('profile-avatar-img', 'User Icon / Avatar')">
+                    <img id="profile-avatar-img" src="https://a.furaffinity.net/1778122575/z3r0gt.gif" alt="User Avatar">
+                </div>
+            </userpage-nav-avatar>
+
+            <userpage-nav-user-details>
+                <div class="c-usernameBlock">
+                    <span class="c-usernameBlock__displayName" id="target-displayname">Z3R0_GT</span>
+                    <span class="c-usernameBlock__userName"><span class="c-usernameBlock__symbol">~</span><span id="target-username">z3r0gt</span></span>
+                </div>
+                <div class="font-small">
+                    <!-- PLAIN TEXT ONLY EDITABLE SHORT DESC -->
+                    <span class="user-title editable-plaintext-allowed" id="target-usertitle" onclick="openPlainTextEditor('target-usertitle', 'User Tagline / Short Description')">a dragon, I guess</span> | Registered: <span id="target-registered">September 26, 2023</span>
+                </div>
+                <ul class="user-nav-page-links">
+                    <li><h3><a class="current" href="#">Home</a></h3></li>
+                    <li><h3><a href="#">Gallery</a></h3></li>
+                    <li><h3><a href="#">Scraps</a></h3></li>
+                    <li><h3><a href="#">Favs</a></h3></li>
+                    <li><h3><a href="#">Journals</a></h3></li>
+                </ul>
+            </userpage-nav-user-details>
+
+            <userpage-nav-interface-buttons>
+                <a class="button standard go" href="#"><i class="bi bi-plus-lg"></i> Watch</a>
+                <a class="button standard" href="#"><i class="bi bi-envelope-fill"></i> Note</a>
+            </userpage-nav-interface-buttons>
+        </userpage-nav-header>
+
+        <!-- 3. USER PROFILE DESCRIPTION (STRICTLY ALLOWED BBCODE EDITABLE AREA #1) -->
+        <section class="userpage-layout-profile">
+            <div id="warning-container-target-description"></div>
+            <div class="section-body userpage-profile aligncenter editable-bbcode-allowed" id="target-description" onclick="openBBCodeEditor('target-description', 'User Profile Description')">
+[center]
+╭━━━━━━━━━━━━· ☆ ·━━━━━━━━━━━━╮
+[h1][color=#FF7E70]Z[/color][color=#F1C40F]e[/color][color=#2ECC71]r[/color][color=#1ABC9C]o[/color] [color=#3498DB]G[/color][color=#9B59B6]e[/color][color=#E91E63]n[/color][color=#FF7E70]e[/color][color=#F1C40F]s[/color][color=#2ECC71]i[/color][color=#1ABC9C]s[/color][/h1]
+[i]Digital Illustrator & Dragon Enthusiast[/i]
+━━━━━━━━━━━━· ☆ ·━━━━━━━━━━━━
+
+[b]Pronouns:[/b] He/Him | [b]Location:[/b] Italy / US | [b]Language:[/b] EN / IT / ES
+[b]Commissions:[/b] [color=#2ECC71]OPEN[/color] | [b]Art Trades:[/b] [color=#E74C3C]CLOSED[/color] | [b]Requests:[/b] Never
+
+[h2]✨ About Me ✨[/h2]
+Welcome to my FurAffinity user page! I specialize in digital illustrations, character designs, and 3D modeling.
+Feel free to check out my gallery or leave a shout below!
+
+╔═════════ Friend List : ═════════╗
+:iconsijzeldrakx: :iconcharagon: :iconblakdragon:
+╚═══════◄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄►═══════╝
+╰━━━━━━━━━━━━· ☆ ·━━━━━━━━━━━━╯
+[/center]
+            </div>
+        </section>
+
+        <!-- 4. TWO-COLUMN GRID LAYOUT -->
+        <div class="userpage-layout-grid">
+
+            <!-- LEFT COLUMN -->
+            <div class="userpage-left-col">
+
+                <!-- FEATURED SUBMISSION -->
+                <section>
+                    <div class="section-header">
+                        <h2>Featured Submission</h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="aligncenter preview_img">
+                            <div class="editable-image-wrapper" onclick="openImageEditor('target-featured-img', 'Featured Submission Image')">
+                                <img id="target-featured-img" src="https://t.furaffinity.net/65140675@600-1781718076.jpg" alt="Featured Submission">
+                            </div>
+                        </div>
+                        <div class="userpage-featured-title aligncenter">
+                            <h2><a href="#" id="target-featured-title">[C] Stealing the moon</a></h2>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- GALLERY PREVIEW -->
+                <section>
+                    <div class="section-header">
+                        <div class="floatright"><h3><a href="#" data-i18n="view_gallery">View Gallery</a></h3></div>
+                        <h2 data-i18n="view_gallery">Gallery</h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="gallery-grid">
+                            <figure><div class="editable-image-wrapper" onclick="openImageEditor('gal-img-1', 'Gallery Image 1')"><img id="gal-img-1" src="https://t.furaffinity.net/66309964@300-1788963485.jpg" alt="Submission"></div></figure>
+                            <figure><div class="editable-image-wrapper" onclick="openImageEditor('gal-img-2', 'Gallery Image 2')"><img id="gal-img-2" src="https://t.furaffinity.net/66227070@300-1788294241.jpg" alt="Submission"></div></figure>
+                            <figure><div class="editable-image-wrapper" onclick="openImageEditor('gal-img-3', 'Gallery Image 3')"><img id="gal-img-3" src="https://t.furaffinity.net/65594148@300-1783384946.jpg" alt="Submission"></div></figure>
+                            <figure><div class="editable-image-wrapper" onclick="openImageEditor('gal-img-4', 'Gallery Image 4')"><img id="gal-img-4" src="https://t.furaffinity.net/65140675@300-1781718076.jpg" alt="Submission"></div></figure>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FAVES PREVIEW -->
+                <section>
+                    <div class="section-header">
+                        <div class="floatright"><h3><a href="#" data-i18n="view_favorites">View Favorites</a></h3></div>
+                        <h2 data-i18n="favs">Favorites</h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="gallery-grid">
+                            <figure><div class="editable-image-wrapper" onclick="openImageEditor('fav-img-1', 'Favorites Image 1')"><img id="fav-img-1" src="https://t.furaffinity.net/66643097@300-1791581764.jpg" alt="Favorite"></div></figure>
+                            <figure><div class="editable-image-wrapper" onclick="openImageEditor('fav-img-2', 'Favorites Image 2')"><img id="fav-img-2" src="https://t.furaffinity.net/66642688@300-1791579856.jpg" alt="Favorite"></div></figure>
+                            <figure><div class="editable-image-wrapper" onclick="openImageEditor('fav-img-3', 'Favorites Image 3')"><img id="fav-img-3" src="https://t.furaffinity.net/65323228@300-1781286747.jpg" alt="Favorite"></div></figure>
+                            <figure><div class="editable-image-wrapper" onclick="openImageEditor('fav-img-4', 'Favorites Image 4')"><img id="fav-img-4" src="https://t.furaffinity.net/63941454@200-1770581114.jpg" alt="Favorite"></div></figure>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- WATCHES & WATCHERS -->
+                <section>
+                    <div class="section-header">
+                        <div class="floatright"><h3><a href="#">View List (Watched by 119)</a></h3></div>
+                        <h2 data-i18n="recent_watchers">Recent Watchers</h2>
+                    </div>
+                    <div class="section-body">
+                        <table class="watch-table">
+                            <tr>
+                                <td><a href="#"><span class="highlight">~</span>Sijzeldrakx</a></td>
+                                <td><a href="#"><span class="highlight">~</span>Charagon</a></td>
+                                <td><a href="#"><span class="highlight">~</span>Blakdragon</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#"><span class="highlight">~</span>mori15</a></td>
+                                <td><a href="#"><span class="highlight">~</span>JankoGoo</a></td>
+                                <td><a href="#"><span class="highlight">~</span>Shadowcloud</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                </section>
+
+                <section>
+                    <div class="section-header">
+                        <div class="floatright"><h3><a href="#">View List (Watching 178)</a></h3></div>
+                        <h2 data-i18n="recently_watched">Recently Watched</h2>
+                    </div>
+                    <div class="section-body">
+                        <table class="watch-table">
+                            <tr>
+                                <td><a href="#"><span class="highlight">~</span>Aelner</a></td>
+                                <td><a href="#"><span class="highlight">~</span>SheathStudios</a></td>
+                                <td><a href="#"><span class="highlight">~</span>Coltrez</a></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#"><span class="highlight">~</span>Lizard Cole</a></td>
+                                <td><a href="#"><span class="highlight">~</span>Unformingdragon</a></td>
+                                <td><a href="#"><span class="highlight">~</span>Kestrelslitterbox</a></td>
+                            </tr>
+                        </table>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="userpage-right-col">
+
+                <!-- STATS -->
+                <section>
+                    <div class="section-header">
+                        <h2 data-i18n="stats">Stats</h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="stats-table">
+                            <div class="stats-cell">
+                                <span class="highlight" data-i18n="views">Views:</span> <span id="target-views">5,536</span><br>
+                                <span class="highlight" data-i18n="submissions">Submissions:</span> <span id="target-submissions">82</span><br>
+                                <span class="highlight" data-i18n="favs">Favs:</span> <span id="target-favs">977</span>
+                            </div>
+                            <div class="stats-cell">
+                                <span class="highlight" data-i18n="comments_made">Comments Made:</span> <span id="target-comments">1,435</span><br>
+                                <span class="highlight" data-i18n="comments_earned">Comments Earned:</span> 477<br>
+                                <span class="highlight" data-i18n="journals">Journals:</span> 8
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FEATURED JOURNAL -->
+                <section>
+                    <div class="section-header">
+                        <div class="floatright"><h3><a href="#" data-i18n="view_journal">View Journal</a></h3></div>
+                        <h2 data-i18n="recent_journal">Recent Journal</h2>
+                    </div>
+                    <div class="section-body">
+                        <!-- JOURNAL TITLE IS PLAIN TEXT ONLY, RATING BADGE (G) IS PROTECTED -->
+                        <h2 style="font-size: 16px;">
+                            <span class="editable-plaintext-allowed" id="target-journal-title" onclick="openPlainTextEditor('target-journal-title', 'Journal Title')">Free raffle</span>
+                            (<span class="c-contentRating--general">G</span>)
+                        </h2>
+                        <div class="font-small" style="margin-bottom: 10px;">2 weeks ago</div>
+
+                        <!-- JOURNAL DESCRIPTION IS STRICTLY ALLOWED BBCODE EDITABLE AREA #2 -->
+                        <div id="warning-container-target-journal-body"></div>
+                        <div style="font-size: 13px; color: #d0d4dc;" class="editable-bbcode-allowed" id="target-journal-body" onclick="openBBCodeEditor('target-journal-body', 'Journal Body Description')">
+[h2]🎨 Monthly Commission Slots & Raffle Info![/h2]
+
+[quote=Z3R0_GT]Hey everyone! Commissions are officially [b][color=#2ECC71]OPEN[/color][/b] for 3 slots this month. Make sure to read my TOS before sending a note![/quote]
+
+[h3]Rules & Information:[/h3]
+[b]1.[/b] Send a note with [u]"Commission Request"[/u] as the subject title.
+[b]2.[/b] Provide clear visual references for your character.
+[b]3.[/b] Payment via PayPal or Ko-fi upfront.
+
+[center]
+━━━━━━━━━━━━· ☆ ·━━━━━━━━━━━━
+Thank you all for the amazing support! :iconz3r0gt:
+[/center]
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SOCIALS / PROFILE CONTACT -->
+                <section>
+                    <div class="section-header">
+                        <h2>User Profile & Socials</h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="profile-info-row"><strong class="highlight">Accepting Trades:</strong> <span id="target-trades">No</span></div>
+                        <div class="profile-info-row"><strong class="highlight">Accepting Commissions:</strong> <span id="target-comms">Yes</span></div>
+                        <div class="profile-info-row"><strong class="highlight">Species:</strong> <span id="target-species">Dragon</span></div>
+                        <div class="profile-info-row"><strong class="highlight">Favorite Music:</strong> <span id="target-music">Rock, Indie Rock</span></div>
+
+                        <div style="margin-top: 15px; font-weight: 700; font-size: 14px;">Contact Information</div>
+                        <div class="user-contact-list">
+                            <div class="user-contact-item">
+                                <i class="bi bi-twitter contact-icon"></i>
+                                <div>
+                                    <div class="font-small"><strong class="highlight">Twitter</strong></div>
+                                    <span id="target-twitter">@Z3R0_G7</span>
+                                </div>
+                            </div>
+                            <div class="user-contact-item">
+                                <i class="bi bi-cloud-fill contact-icon"></i>
+                                <div>
+                                    <div class="font-small"><strong class="highlight">Bluesky</strong></div>
+                                    <span id="target-bluesky">z3r0g7.bsky.social</span>
+                                </div>
+                            </div>
+                            <div class="user-contact-item">
+                                <i class="bi bi-cup-hot-fill contact-icon"></i>
+                                <div>
+                                    <div class="font-small"><strong class="highlight">Ko-fi</strong></div>
+                                    <span id="target-kofi">z3r0_gt</span>
+                                </div>
+                            </div>
+                            <div class="user-contact-item">
+                                <i class="bi bi-telegram contact-icon"></i>
+                                <div>
+                                    <div class="font-small"><strong class="highlight">Telegram</strong></div>
+                                    <span id="target-telegram">@Z3R0_GT</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- COMMENTS / SHOUTS -->
+                <section>
+                    <div class="section-header">
+                        <h2>Shouts / Comments</h2>
+                    </div>
+                    <div class="section-body">
+                        <div class="userpage-shouts-container" id="comments-container">
+                            <div class="comment_container">
+                                <div class="comment-avatar">
+                                    <img src="https://a.furaffinity.net/1745252177/sai-mercael.gif" alt="User">
+                                </div>
+                                <div class="comment-body">
+                                    <div class="comment-header">
+                                        <span class="comment-username"><span class="symbol">~</span>A Semi-Purple Bat</span>
+                                        <span class="comment-date">3 days ago</span>
+                                    </div>
+                                    <div class="comment-text">Don't mind me I am just an hyper dragon handling expert</div>
+                                </div>
+                            </div>
+
+                            <div class="comment_container">
+                                <div class="comment-avatar">
+                                    <img src="https://a.furaffinity.net/1734195446/blizzate.gif" alt="User">
+                                </div>
+                                <div class="comment-body">
+                                    <div class="comment-header">
+                                        <span class="comment-username"><span class="symbol">~</span>Blizzate</span>
+                                        <span class="comment-date">3 days ago</span>
+                                    </div>
+                                    <div class="comment-text">thx for favs! ^w^</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Post new comment form -->
+                        <form class="shout-post-form" onsubmit="addComment(event)">
+                            <textarea id="new-comment-input" placeholder="Leave a shout (Supports BBCode!)..." rows="3" required></textarea>
+                            <button type="submit" class="button standard go" style="align-self: flex-end;">Post Shout</button>
+                        </form>
+                    </div>
+                </section>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ==========================================
+         5. IMAGE REPLACEMENT MODAL
+         ========================================== -->
+    <div class="modal-overlay" id="image-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="image-modal-title">Replace Image</h3>
+                <button class="modal-close-btn" onclick="closeModal('image-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- LIMITATIONS NOTICE BLOCK (For Banner & Icon) -->
+                <div id="image-modal-limits-notice" style="display:none; background:#1c2331; border:1px solid #2b3952; border-left:4px solid #3b82f6; border-radius:4px; padding:10px 12px; margin-bottom:12px; font-size:12px; line-height:1.45; color:#d0d7de;">
+                </div>
+
+                <div>
+                    <label style="font-size: 11px; font-weight: 700; color: #aaa; text-transform: uppercase;">Image Web URL</label>
+                    <input type="text" id="image-url-input" placeholder="https://example.com/image.png" style="width:100%; background:#252830; border:1px solid #3d414d; color:#fff; padding:7px; border-radius:4px; margin-top:4px;" oninput="updateImageModalSource(this.value)">
+                </div>
+
+                <div style="text-align: center; color: #888; font-size: 12px; margin: 2px 0;">— OR LOAD FROM YOUR COMPUTER —</div>
+                <button class="btn-fa btn-secondary-fa" style="width:100%; justify-content:center;" onclick="document.getElementById('file-upload-input').click()">
+                    <i class="bi bi-folder2-open"></i> Upload Local Image File
+                </button>
+                <input type="file" id="file-upload-input" accept="image/*" style="display:none;" onchange="handleFileUpload(event)">
+
+                <div id="image-preview-container" style="text-align:center;">
+                    <label style="font-size: 11px; color: #aaa; display:block; margin-bottom:4px;">Image Preview:</label>
+                    <img id="image-modal-preview" src="" style="max-width:100%; max-height:220px; border-radius:4px; border:1px solid #444;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-fa btn-secondary-fa" onclick="closeModal('image-modal')">Cancel</button>
+                <button class="btn-fa" onclick="saveImageModal()">Save Image</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         6. PLAIN TEXT EDIT MODAL (FOR JOURNAL TITLE & TAGLINE)
+         ========================================== -->
+    <div class="modal-overlay" id="plaintext-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="plaintext-modal-title">Edit Plain Text</h3>
+                <button class="modal-close-btn" onclick="closeModal('plaintext-modal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label style="font-size: 11px; font-weight: 700; color: #aaa; text-transform: uppercase;" id="plaintext-label">Text Content</label>
+                <input type="text" id="plaintext-input-val" style="width:100%; background:#252830; border:1px solid #3d414d; color:#fff; padding:8px; border-radius:4px; font-size:14px;">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-fa btn-secondary-fa" onclick="closeModal('plaintext-modal')">Cancel</button>
+                <button class="btn-fa" onclick="savePlainTextModal()">Save Text</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         7. FULLSCREEN 50/50 SPLIT BBCODE EDITOR MODAL WITH IMAGE TO PIXEL ART CONVERTER
+         ========================================== -->
+    <div class="modal-overlay" id="bbcode-modal">
+        <div class="modal-card fullscreen-split">
+            <div class="modal-header">
+                <h3 id="bbcode-modal-title"><i class="bi bi-pencil-square"></i> BBCode Editor — 50/50 Split Live View</h3>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <button class="btn-fa btn-secondary-fa" onclick="copyBBCodeToClipboard()"><i class="bi bi-clipboard"></i> Copy BBCode</button>
+                    <button class="modal-close-btn" onclick="closeModal('bbcode-modal')">&times;</button>
+                </div>
+            </div>
+
+            <div class="split-modal-body">
+
+                <!-- LEFT PANE: BBCODE TOOLBAR, DRAWERS & TEXTAREA -->
+                <div class="split-left-pane">
+
+                    <!-- ICON RESTRICTION WARNING ALERT -->
+                    <div id="modal-icon-warning" class="icon-warning-badge" style="display:none;">
+                        <i class="bi bi-info-circle-fill" style="font-size: 16px;"></i>
+                        <span id="modal-icon-warning-text"></span>
+                    </div>
+
+                    <!-- BBCODE TOOLBAR WITH UNDO/REDO & PIXEL ART TOOL -->
+                    <div class="bbcode-toolbar">
+                        <button class="btn-bbcode" id="btn-undo" onclick="undoEditorStep()" title="Undo (Ctrl+Z)"><i class="bi bi-arrow-counterclockwise"></i> Undo</button>
+                        <button class="btn-bbcode" id="btn-redo" onclick="redoEditorStep()" title="Redo (Ctrl+Y)"><i class="bi bi-arrow-clockwise"></i> Redo</button>
+                        <span style="color:#484d59; margin:0 2px;">|</span>
+                        <button class="btn-bbcode" onclick="insertBBCode('[b]', '[/b]')" title="Bold">B</button>
+                        <button class="btn-bbcode" style="font-style:italic;" onclick="insertBBCode('[i]', '[/i]')" title="Italic">I</button>
+                        <button class="btn-bbcode" style="text-decoration:underline;" onclick="insertBBCode('[u]', '[/u]')" title="Underline">U</button>
+                        <button class="btn-bbcode" style="text-decoration:line-through;" onclick="insertBBCode('[s]', '[/s]')" title="Strikethrough">S</button>
+                        <button class="btn-bbcode" onclick="insertBBCode('[center]', '[/center]')" title="Center">Center</button>
+                        <button class="btn-bbcode" onclick="insertBBCode('[color=#ff5555]', '[/color]')" title="Color">Color</button>
+                        <button class="btn-bbcode" onclick="insertBBCode('[h1]', '[/h1]')" title="Heading 1">H1</button>
+                        <button class="btn-bbcode" onclick="insertBBCode('[h2]', '[/h2]')" title="Heading 2">H2</button>
+                        <button class="btn-bbcode" onclick="insertBBCode('[h3]', '[/h3]')" title="Heading 3">H3</button>
+                        <button class="btn-bbcode" onclick="insertBBCode('[quote]', '[/quote]')" title="Quote">Quote</button>
+                        <button class="btn-bbcode" onclick="insertBBCode('[url=https://...]', '[/url]')" title="Link">Link</button>
+                        <button class="btn-bbcode" onclick="toggleDrawer('pixelart-drawer')" title="Image to BBCode Pixel Art Converter"><i class="bi bi-grid-3x3-gap-fill"></i> Image to Pixel Art</button>
+                        <button class="btn-bbcode" onclick="toggleDrawer('gradient-drawer')" title="Text Colorizer / Gradient Generator"><i class="bi bi-palette-fill"></i> Gradient Tool</button>
+                        <button class="btn-bbcode" onclick="toggleDrawer('decorators-drawer')" title="Premade Text Borders"><i class="bi bi-border-style"></i> Decorators</button>
+                        <button class="btn-bbcode" onclick="toggleDrawer('friends-drawer')" title="Friend List Generator"><i class="bi bi-people-fill"></i> Friends List Builder</button>
+                    </div>
+
+                    <!-- DRAWER 0: IMAGE TO BBCODE PIXEL ART CONVERTER -->
+                    <div id="pixelart-drawer" class="tool-drawer" style="display:none;">
+                        <label><i class="bi bi-grid-3x3-gap-fill"></i> Image to BBCode Pixel Art Converter</label>
+                        <div style="display:flex; flex-direction:column; gap:8px;">
+                            <div style="display:flex; gap:10px; align-items:center;">
+                                <input type="text" id="pixelart-url-input" placeholder="Image URL (e.g. https://...)" style="flex-grow:1; background:#202228; border:1px solid #3d414d; color:#fff; padding:4px 8px; font-size:12px; border-radius:4px;">
+                                <button class="btn-fa btn-secondary-fa" style="padding:4px 10px; font-size:12px;" onclick="document.getElementById('pixelart-file-input').click()">Upload File</button>
+                                <input type="file" id="pixelart-file-input" accept="image/*" style="display:none;" onchange="showPixelArtFileName(event)">
+                            </div>
+                            <div style="display:flex; gap:15px; align-items:center; flex-wrap:wrap;">
+                                <span style="font-size:12px;">Pixel Width:</span>
+                                <input type="range" id="pixelart-width-input" value="35" min="10" max="70" style="width:140px; cursor:pointer; accent-color:#ff7e70;" oninput="document.getElementById('pixelart-width-val').textContent = this.value">
+                                <span id="pixelart-width-val" style="font-size:12px; font-weight:600; color:#fff; min-width:24px;">35</span>
+                                <span style="font-size:11px; color:#aaa;" id="pixelart-file-name-label"></span>
+                                <button class="btn-fa" style="padding:4px 12px; font-size:12px;" onclick="generatePixelArtBBCode()">Generate & Insert Pixel Art BBCode</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DRAWER 1: EXTENDED TEXT COLORIZER / GRADIENT TOOL -->
+                    <div id="gradient-drawer" class="tool-drawer" style="display:none;">
+                        <label><i class="bi bi-palette-fill"></i> Text Colorizer / Gradient Generator</label>
+                        <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+                            <span style="font-size:12px; font-weight:600;">Gradient Mode:</span>
+                            <select id="grad-mode-select" style="background:#202228; border:1px solid #3d414d; color:#fff; padding:4px 8px; font-size:12px; border-radius:4px;" onchange="updateGradientColorInputs()">
+                                <option value="horizontal">Horizontal 2-Color Gradient</option>
+                                <option value="three-color">3-Color Gradient (Start → Mid → End)</option>
+                                <option value="solid">Solid Color</option>
+                                <option value="random">Random Colors</option>
+                                <option value="rainbow">Rainbow Spectrum</option>
+                            </select>
+
+                            <div id="grad-start-container" style="display:flex; align-items:center; gap:4px;">
+                                <span style="font-size:11px;">Start:</span>
+                                <input type="color" id="grad-color-start" value="#FF7E70" style="background:none; border:none; cursor:pointer;">
+                            </div>
+
+                            <div id="grad-mid-container" style="display:none; align-items:center; gap:4px;">
+                                <span style="font-size:11px;">Middle:</span>
+                                <input type="color" id="grad-color-mid" value="#F1C40F" style="background:none; border:none; cursor:pointer;">
+                            </div>
+
+                            <div id="grad-end-container" style="display:flex; align-items:center; gap:4px;">
+                                <span style="font-size:11px;">End:</span>
+                                <input type="color" id="grad-color-end" value="#0704FA" style="background:none; border:none; cursor:pointer;">
+                            </div>
+
+                            <button class="btn-fa" style="padding:4px 10px; font-size:12px;" onclick="applyGradientToSelection()">Apply Colorizer BBCode</button>
+                        </div>
+                    </div>
+
+                    <!-- DRAWER 2: PREMADE DECORATORS -->
+                    <div id="decorators-drawer" class="tool-drawer" style="display:none;">
+                        <label><i class="bi bi-border-style"></i> <span data-i18n="decorators">Premade ASCII / Unicode Text Decorators</span></label>
+                        <div id="decorators-list-container" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+                    </div>
+
+                    <!-- DRAWER 3: FRIEND LIST BUILDER -->
+                    <div id="friends-drawer" class="tool-drawer" style="display:none;">
+                        <label><i class="bi bi-people-fill"></i> Friend List Builder</label>
+                        <div style="font-size:12px; color:#aaa;">Enter FA Usernames (separated by spaces or commas):</div>
+                        <input type="text" id="friends-input-names" placeholder="bluemouse5 pantomime64 rokkuvenz naeul jonsuluna" style="width:100%; background:#202228; border:1px solid #3d414d; color:#fff; padding:6px; font-size:13px; border-radius:4px;">
+                        <button class="btn-fa" style="align-self:flex-start; padding:4px 10px; font-size:12px;" onclick="generateFriendListBBCode()">Generate Friend List BBCode</button>
+                    </div>
+
+                    <!-- TEXTAREA WITH AUTO-SAVE & KEYBOARD SHORTCUTS -->
+                    <textarea id="bbcode-editor-input" style="width:100%; flex-grow:1; background:#181a20; border:1px solid #3d414d; color:#fff; padding:12px; font-family:monospace; font-size:13px; line-height:1.2; border-radius:4px; resize:none;" oninput="handleEditorInput()" onkeydown="handleEditorKeyDown(event)"></textarea>
+                </div>
+
+                <!-- RIGHT PANE: LIVE PREVIEW ZONE -->
+                <div class="split-right-pane">
+                    <div class="preview-header"><i class="bi bi-eye-fill"></i> Real-Time Live Preview</div>
+                    <div class="preview-scroll-box" id="bbcode-modal-live-preview"></div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-fa" onclick="closeModal('bbcode-modal')"><i class="bi bi-check-lg"></i> Close & Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         8. JAVASCRIPT APP & TOOLS LOGIC
+         ========================================== -->
+    <script>
+        /* ==========================================
+           INTERNATIONALIZATION & TRANSLATIONS (JSON KEY SYSTEM)
+           ========================================== */
+        const TRANSLATIONS = {
+            en: {
+                warning_banner: "This page is only meant for preview, the design itself is different, yet it make give the idea on how might look like, some changes require extra steps from the furaffinity's page itself, ya may look the how to do it",
+                load_profile_title: "Load Profile from FurAffinity",
+                username_placeholder: "Enter username or URL (e.g. z3r0gt or furaffinity.net/user/z3r0gt)",
+                fetch_btn: "Fetch Profile",
+                reset_btn: "Reset",
+                view_gallery: "View Gallery",
+                view_favorites: "View Favorites",
+                recent_watchers: "Recent Watchers",
+                recently_watched: "Recently Watched",
+                stats: "Stats",
+                views: "Views",
+                submissions: "Submissions",
+                favs: "Favs",
+                comments_made: "Comments Made",
+                comments_earned: "Comments Earned",
+                journals: "Journals",
+                recent_journal: "Recent Journal",
+                view_journal: "View Journal",
+                profile_socials: "User Profile & Socials",
+                shouts_comments: "Shouts / Comments",
+                post_shout: "Post Shout",
+                copy_bbcode: "Copy BBCode",
+                live_preview: "Real-Time Live Preview",
+                image_to_pixel_art: "Image to Pixel Art",
+                gradient_tool: "Gradient Tool",
+                decorators: "Premade ASCII / Unicode Text Decorators",
+                friends_list_builder: "Friend List Builder",
+                pixel_width: "Pixel Width",
+                generate_pixel_art_btn: "Generate & Insert Pixel Art BBCode",
+                apply_colorizer_btn: "Apply Colorizer BBCode",
+                generate_friends_btn: "Generate Friend List BBCode"
+            },
+            es: {
+                warning_banner: "Esta página es solo para vista previa, el diseño es diferente pero da una idea de cómo se vería. Algunos cambios requieren pasos adicionales en FurAffinity.",
+                load_profile_title: "Cargar Perfil desde FurAffinity",
+                username_placeholder: "Ingresa usuario o URL (ej. z3r0gt o furaffinity.net/user/z3r0gt)",
+                fetch_btn: "Obtener Perfil",
+                reset_btn: "Restablecer",
+                view_gallery: "Ver Galería",
+                view_favorites: "Ver Favoritos",
+                recent_watchers: "Seguidores Recientes",
+                recently_watched: "Siguiendo Recientemente",
+                stats: "Estadísticas",
+                views: "Vistas",
+                submissions: "Publicaciones",
+                favs: "Favoritos",
+                comments_made: "Comentarios Hechos",
+                comments_earned: "Comentarios Recibidos",
+                journals: "Diarios",
+                recent_journal: "Diario Reciente",
+                view_journal: "Ver Diario",
+                profile_socials: "Perfil y Redes Sociales",
+                shouts_comments: "Comentarios / Saludos",
+                post_shout: "Publicar Saludo",
+                copy_bbcode: "Copiar BBCode",
+                live_preview: "Vista En Vivo",
+                image_to_pixel_art: "Imagen a Pixel Art",
+                gradient_tool: "Herramienta de Degradado",
+                decorators: "Decoradores de Texto",
+                friends_list_builder: "Creador de Lista de Amigos",
+                pixel_width: "Ancho en Píxeles",
+                generate_pixel_art_btn: "Generar e Insertar Pixel Art",
+                apply_colorizer_btn: "Aplicar Degradado de Color",
+                generate_friends_btn: "Generar Lista de Amigos"
+            },
+            it: {
+                warning_banner: "Questa pagina serve solo per l'anteprima, il design è diverso ma dà un'idea di come potrebbe apparire.",
+                load_profile_title: "Carica Profilo da FurAffinity",
+                username_placeholder: "Inserisci nome utente o URL (es. z3r0gt o furaffinity.net/user/z3r0gt)",
+                fetch_btn: "Carica Profilo",
+                reset_btn: "Ripristina",
+                view_gallery: "Vedi Galleria",
+                view_favorites: "Vedi Preferiti",
+                recent_watchers: "Follower Recenti",
+                recently_watched: "Seguiti di Recente",
+                stats: "Statistiche",
+                views: "Visualizzazioni",
+                submissions: "Pubblicazioni",
+                favs: "Preferiti",
+                comments_made: "Commenti Fatti",
+                comments_earned: "Commenti Ricevuti",
+                journals: "Diari",
+                recent_journal: "Diario Recente",
+                view_journal: "Vedi Diario",
+                profile_socials: "Profilo e Social",
+                shouts_comments: "Commenti / Shouts",
+                post_shout: "Pubblica Shout",
+                copy_bbcode: "Copia BBCode",
+                live_preview: "Anteprima in Tempo Reale",
+                image_to_pixel_art: "Immagine in Pixel Art",
+                gradient_tool: "Strumento Sfumatura",
+                decorators: "Decoratori di Testo",
+                friends_list_builder: "Lista Amici",
+                pixel_width: "Larghezza Pixel",
+                generate_pixel_art_btn: "Genera e Inserisci Pixel Art",
+                apply_colorizer_btn: "Applica Sfumatura",
+                generate_friends_btn: "Genera Lista Amici"
+            }
+        };
+
+        function setLanguage(langKey) {
+            if (!TRANSLATIONS[langKey]) return;
+            const dict = TRANSLATIONS[langKey];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) {
+                    if (el.tagName === 'INPUT' && (el.type === 'text' || el.type === 'search')) {
+                        el.placeholder = dict[key];
+                    } else {
+                        el.textContent = dict[key];
+                    }
+                }
+            });
+        }
+
+        // Store raw BBCode for Profile Desc & Journal Desc ONLY
+        const rawBBCodeStore = {};
+
+        // Active editing element trackers
+        let activeTargetImgId = null;
+        let activeTargetTextId = null;
+        let activePlaintextId = null;
+
+        // UNDO / REDO HISTORY STACKS
+        let editorHistory = [];
+        let editorHistoryIndex = -1;
+
+        // Toast Notification Helper
+        function showNotification(msg) {
+            const toast = document.getElementById('notification-toast');
+            document.getElementById('toast-text').textContent = msg;
+            toast.classList.add('active');
+            setTimeout(() => {
+                toast.classList.remove('active');
+            }, 2500);
+        }
+
+        // Initialize stored BBCode and Decorators on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const editableTexts = document.querySelectorAll('.editable-bbcode-allowed');
+            editableTexts.forEach(el => {
+                rawBBCodeStore[el.id] = el.innerHTML.trim().replace(/<br\s*[\/]?>/gi, "\n");
+                renderElementBBCode(el.id);
+            });
+            renderDecoratorsDrawer();
+        });
+
+        /* ==========================================
+           FA ICON COUNT RESTRICTION CHECKER
+           ========================================== */
+        function countFAIcons(text) {
+            if (!text) return 0;
+            const matches = text.match(/:icon[a-zA-Z0-9_\-]+:|:[a-zA-Z0-9_\-]+icon:|@@[a-zA-Z0-9_\-]+/gi);
+            return matches ? matches.length : 0;
+        }
+
+        /* ==========================================
+           COMPREHENSIVE FA BBCODE PARSER
+           ========================================== */
+        function parseFABBCode(text) {
+            if (!text) return '';
+            let html = text;
+
+            // Escape script/style tags
+            html = html.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, '')
+                       .replace(/<style[^>]*>([\s\S]*?)<\/style>/gi, '');
+
+            // Convert standard BBCode tags
+            html = html.replace(/\[b\]([\s\S]*?)\[\/b\]/gi, '<span class="bbcode_b">$1</span>');
+            html = html.replace(/\[i\]([\s\S]*?)\[\/i\]/gi, '<span class="bbcode_i">$1</span>');
+            html = html.replace(/\[u\]([\s\S]*?)\[\/u\]/gi, '<span class="bbcode_u">$1</span>');
+            html = html.replace(/\[s\]([\s\S]*?)\[\/s\]/gi, '<span class="bbcode_s">$1</span>');
+
+            // Alignments
+            html = html.replace(/\[center\]([\s\S]*?)\[\/center\]/gi, '<span class="bbcode_center">$1</span>');
+            html = html.replace(/\[left\]([\s\S]*?)\[\/left\]/gi, '<span class="bbcode_left">$1</span>');
+            html = html.replace(/\[right\]([\s\S]*?)\[\/right\]/gi, '<span class="bbcode_right">$1</span>');
+
+            // Colors & Sizes
+            html = html.replace(/\[color=(.*?)\]([\s\S]*?)\[\/color\]/gi, '<span style="color:$1">$2</span>');
+            html = html.replace(/\[size=(.*?)\]([\s\S]*?)\[\/size\]/gi, '<span style="font-size:$1">$2</span>');
+
+            // HEADERS [h1] THROUGH [h5]
+            html = html.replace(/\[h1\]([\s\S]*?)\[\/h1\]/gi, '<h1 class="bbcode_h1">$1</h1>');
+            html = html.replace(/\[h2\]([\s\S]*?)\[\/h2\]/gi, '<h2 class="bbcode_h2">$1</h2>');
+            html = html.replace(/\[h3\]([\s\S]*?)\[\/h3\]/gi, '<h3 class="bbcode_h3">$1</h3>');
+            html = html.replace(/\[h4\]([\s\S]*?)\[\/h4\]/gi, '<h4 class="bbcode_h4">$1</h4>');
+            html = html.replace(/\[h5\]([\s\S]*?)\[\/h5\]/gi, '<h5 class="bbcode_h5">$1</h5>');
+
+            // Quotes
+            html = html.replace(/\[quote=(.*?)\]([\s\S]*?)\[\/quote\]/gi, '<blockquote class="bbcode_quote"><span class="bbcode_quote_name">$1 wrote:</span>$2</blockquote>');
+            html = html.replace(/\[quote\]([\s\S]*?)\[\/quote\]/gi, '<blockquote class="bbcode_quote">$1</blockquote>');
+
+            // Links & Images
+            html = html.replace(/\[url=(.*?)\]([\s\S]*?)\[\/url\]/gi, '<a href="$1" target="_blank" class="highlight">$2</a>');
+            html = html.replace(/\[url\]([\s\S]*?)\[\/url\]/gi, '<a href="$1" target="_blank" class="highlight">$1</a>');
+            html = html.replace(/\[img\]([\s\S]*?)\[\/img\]/gi, '<img src="$1" style="max-width:100%; border-radius:4px;" />');
+
+            // USER ICON PARSING WITH FA >30 ICON RENDERING RULE:
+            let currentIconIndex = 0;
+
+            html = html.replace(/:icon([a-zA-Z0-9_\-]+):/gi, function(match, username) {
+                currentIconIndex++;
+                const u = username.toLowerCase();
+                if (currentIconIndex <= 30) {
+                    return `<a href="https://www.furaffinity.net/user/${u}" target="_blank" class="iconusername" title="${u}"><img src="https://a.furaffinity.net/avatar/${u}.gif" onError="this.onerror=null;this.src='https://a.furaffinity.net/themes/beta/img/defaultuser.gif';" alt="${u}"/>&nbsp;<span class="highlight">~${u}</span></a>`;
+                } else {
+                    return `<a href="https://www.furaffinity.net/user/${u}" target="_blank" class="linkusername"><span class="highlight">~${u}</span></a>`;
+                }
+            });
+
+            html = html.replace(/:([a-zA-Z0-9_\-]+)icon:/gi, function(match, username) {
+                currentIconIndex++;
+                const u = username.toLowerCase();
+                if (currentIconIndex <= 30) {
+                    return `<a href="https://www.furaffinity.net/user/${u}" target="_blank" class="iconusername" title="${u}"><img src="https://a.furaffinity.net/avatar/${u}.gif" onError="this.onerror=null;this.src='https://a.furaffinity.net/themes/beta/img/defaultuser.gif';" alt="${u}"/></a>`;
+                } else {
+                    return `<a href="https://www.furaffinity.net/user/${u}" target="_blank" class="linkusername"><span class="highlight">~${u}</span></a>`;
+                }
+            });
+
+            html = html.replace(/:link([a-zA-Z0-9_\-]+):|@@([a-zA-Z0-9_\-]+)|@([a-zA-Z0-9_\-]+)/gi, function(match, u1, u2, u3) {
+                const u = (u1 || u2 || u3).toLowerCase();
+                return `<a href="https://www.furaffinity.net/user/${u}" target="_blank" class="linkusername"><span class="highlight">~${u}</span></a>`;
+            });
+
+            // Special codes & Dividers
+            html = html.replace(/\(c\)/gi, '©')
+                       .replace(/\(tm\)/gi, '™')
+                       .replace(/\(r\)/gi, '®')
+                       .replace(/-----+/g, '<hr class="bbcode_hr">');
+
+            // Line breaks
+            html = html.replace(/\n/g, '<br>');
+
+            return html;
+        }
+
+        function renderElementBBCode(elementId) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            const code = rawBBCodeStore[elementId] || el.textContent;
+
+            // Check icon count
+            const iconCount = countFAIcons(code);
+            const warningContainer = document.getElementById(`warning-container-${elementId}`);
+            if (warningContainer) {
+                if (iconCount > 30) {
+                    warningContainer.innerHTML = `
+                        <div class="icon-warning-badge">
+                            <i class="bi bi-info-circle-fill"></i>
+                            <span>Notice: You have used ${iconCount} icon tags. FurAffinity displays the first 30 icons as images; icons 31+ render as text links.</span>
+                        </div>
+                    `;
+                } else {
+                    warningContainer.innerHTML = '';
+                }
+            }
+
+            el.innerHTML = parseFABBCode(code);
+        }
+
+        /* ==========================================
+           FA PROFILE FETCHER
+           ========================================== */
+        async function fetchFAProfile() {
+            let inputVal = document.getElementById('fa-username-input').value.trim();
+            if (!inputVal) {
+                alert("Please enter a FurAffinity username or profile URL!");
+                return;
+            }
+
+            let username = inputVal.replace(/https?:\/\/(www\.)?furaffinity\.net\/user\//gi, '').replace(/\//g, '').trim();
+
+            const fetchBtn = document.querySelector('#fa-fetcher-bar .btn-fa');
+            const origBtnHtml = fetchBtn.innerHTML;
+            fetchBtn.innerHTML = '<i class="bi bi-arrow-repeat spin"></i> Fetching...';
+            fetchBtn.disabled = true;
+
+            const targetUrl = `https://www.furaffinity.net/user/${username}/`;
+            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+
+            try {
+                const response = await fetch(proxyUrl);
+                if (!response.ok) throw new Error("Network response was not ok");
+                const htmlText = await response.text();
+
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlText, 'text/html');
+
+                const dispNameEl = doc.querySelector('.js-displayName');
+                if (dispNameEl) document.getElementById('target-displayname').textContent = dispNameEl.textContent.trim();
+                document.getElementById('target-username').textContent = username;
+
+                const avatarEl = doc.querySelector('userpage-nav-avatar img');
+                if (avatarEl && avatarEl.src) {
+                    let avatarSrc = avatarEl.getAttribute('src');
+                    if (avatarSrc.startsWith('//')) avatarSrc = 'https:' + avatarSrc;
+                    document.getElementById('profile-avatar-img').src = avatarSrc;
+                }
+
+                const bannerEl = doc.querySelector('site-banner img');
+                if (bannerEl && bannerEl.src) {
+                    let bannerSrc = bannerEl.getAttribute('src');
+                    if (bannerSrc.startsWith('//')) bannerSrc = 'https:' + bannerSrc;
+                    document.getElementById('profile-banner-img').src = bannerSrc;
+                }
+
+                const descEl = doc.querySelector('.userpage-profile');
+                if (descEl) {
+                    rawBBCodeStore['target-description'] = descEl.innerHTML.trim();
+                    renderElementBBCode('target-description');
+                }
+
+                const featImgEl = doc.querySelector('.userpage-section-left .preview_img img');
+                if (featImgEl) {
+                    let featSrc = featImgEl.getAttribute('src');
+                    if (featSrc.startsWith('//')) featSrc = 'https:' + featSrc;
+                    document.getElementById('target-featured-img').src = featSrc;
+                }
+
+                alert(`Successfully loaded profile preview for "${username}"!`);
+
+            } catch (err) {
+                console.warn("Direct CORS proxy fetch failed:", err);
+                alert(`Notice: Could not automatically fetch "${username}" due to FurAffinity anti-bot protection.\n\nYou can still manually click allowed text fields or images to edit them!`);
+            } finally {
+                fetchBtn.innerHTML = origBtnHtml;
+                fetchBtn.disabled = false;
+            }
+        }
+
+        /* ==========================================
+           IMAGE REPLACEMENT MODAL LOGIC
+           ========================================== */
+        function openImageEditor(targetImgId, title) {
+            activeTargetImgId = targetImgId;
+            document.getElementById('image-modal-title').textContent = `Replace Image: ${title}`;
+            const currentSrc = document.getElementById(targetImgId).src;
+            document.getElementById('image-url-input').value = currentSrc;
+            document.getElementById('image-modal-preview').src = currentSrc;
+
+            const noticeEl = document.getElementById('image-modal-limits-notice');
+            if (targetImgId === 'profile-banner-img') {
+                noticeEl.innerHTML = `
+                    <div style="font-weight:700; color:#60a5fa; margin-bottom:6px;"><i class="bi bi-info-circle-fill"></i> Profile Banner Upload Specifications</div>
+                    <div><strong>Accepted File Formats:</strong> JPG, PNG, GIF</div>
+                    <div><strong>Max File Size:</strong> 10 MB</div>
+                    <div><strong>Max Dimensions:</strong> 1850x300 pixels</div>
+                    <div style="margin-top:6px; color:#9aa5b5; font-size:11px;">Uploaded images will be converted to JPG format, and shrunken down if they exceed the maximum dimensions.<br>For best experience, upload banner images that match the maximum dimensions or are at least close to their aspect ratio.</div>
+                `;
+                noticeEl.style.display = 'block';
+            } else if (targetImgId === 'profile-avatar-img') {
+                noticeEl.innerHTML = `
+                    <div style="font-weight:700; color:#60a5fa; margin-bottom:6px;"><i class="bi bi-info-circle-fill"></i> User Icon / Avatar Upload Specifications</div>
+                    <div><strong>Accepted File Formats:</strong> GIF. While JPG and PNG can be uploaded they will be converted to GIF format, with possible loss of quality.</div>
+                    <div><strong>Max File Size:</strong> 75 KB</div>
+                    <div><strong>Max Dimensions:</strong> 100x100 pixels</div>
+                `;
+                noticeEl.style.display = 'block';
+            } else {
+                noticeEl.style.display = 'none';
+            }
+
+            openModal('image-modal');
+        }
+
+        function updateImageModalSource(srcUrl) {
+            if (!srcUrl) return;
+            document.getElementById('image-modal-preview').src = srcUrl;
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const dataUrl = e.target.result;
+                document.getElementById('image-url-input').value = dataUrl;
+                updateImageModalSource(dataUrl);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function saveImageModal() {
+            const finalSrc = document.getElementById('image-modal-preview').src;
+            if (finalSrc && activeTargetImgId) {
+                document.getElementById(activeTargetImgId).src = finalSrc;
+            }
+            closeModal('image-modal');
+        }
+
+        /* ==========================================
+           PLAIN TEXT EDITING MODAL (FOR JOURNAL TITLE & USER TAGLINE)
+           ========================================== */
+        function openPlainTextEditor(elementId, title) {
+            activePlaintextId = elementId;
+            document.getElementById('plaintext-modal-title').textContent = `Edit Plain Text: ${title}`;
+            document.getElementById('plaintext-label').textContent = title;
+            document.getElementById('plaintext-input-val').value = document.getElementById(elementId).textContent.trim();
+            openModal('plaintext-modal');
+        }
+
+        function savePlainTextModal() {
+            const val = document.getElementById('plaintext-input-val').value.trim();
+            if (activePlaintextId && val) {
+                document.getElementById(activePlaintextId).textContent = val;
+            }
+            closeModal('plaintext-modal');
+        }
+
+        /* ==========================================
+           IMAGE TO BBCODE PIXEL ART GENERATOR
+           ========================================== */
+        function showPixelArtFileName(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('pixelart-file-name-label').textContent = `Selected: ${file.name}`;
+            }
+        }
+
+        function generatePixelArtBBCode() {
+            const fileInput = document.getElementById('pixelart-file-input');
+            const urlInput = document.getElementById('pixelart-url-input').value.trim();
+            const targetWidth = parseInt(document.getElementById('pixelart-width-input').value, 10) || 35;
+
+            let img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.onload = function() {
+                const aspect = img.height / img.width;
+                // Height scaling factor (~0.55) to compensate for character aspect ratio
+                const targetHeight = Math.max(1, Math.round(targetWidth * aspect * 0.55));
+
+                const canvas = document.createElement('canvas');
+                canvas.width = targetWidth;
+                canvas.height = targetHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+
+                const imgData = ctx.getImageData(0, 0, targetWidth, targetHeight).data;
+                let bbcodeLines = [];
+
+                for (let y = 0; y < targetHeight; y++) {
+                    let line = '';
+                    for (let x = 0; x < targetWidth; x++) {
+                        const i = (y * targetWidth + x) * 4;
+                        const r = imgData[i];
+                        const g = imgData[i + 1];
+                        const b = imgData[i + 2];
+                        const a = imgData[i + 3];
+
+                        if (a < 40) {
+                            line += ' '; // Transparent space
+                        } else {
+                            const hex = rgbToHex(r, g, b);
+                            line += `[color=${hex}]█[/color]`;
+                        }
+                    }
+                    bbcodeLines.push(line);
+                }
+
+                const finalBBCode = '\n[center]\n' + bbcodeLines.join('\n') + '\n[/center]\n';
+                insertBBCode(finalBBCode, '');
+                showNotification("Pixel Art BBCode generated and inserted!");
+            };
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) { img.src = e.target.result; };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else if (urlInput) {
+                img.src = urlInput;
+            } else {
+                alert("Please select an image file or enter an image URL first!");
+            }
+        }
+
+        /* ==========================================
+           BBCODE TEXT EDITOR & AUTO-SAVE + UNDO/REDO
+           ========================================== */
+        function openBBCodeEditor(targetTextId, title) {
+            activeTargetTextId = targetTextId;
+            document.getElementById('bbcode-modal-title').innerHTML = `<i class="bi bi-pencil-square"></i> Edit Text: ${title} — 50/50 Split Live View`;
+
+            const currentCode = rawBBCodeStore[targetTextId] || document.getElementById(targetTextId).textContent;
+            const editorInput = document.getElementById('bbcode-editor-input');
+            editorInput.value = currentCode;
+
+            editorHistory = [currentCode];
+            editorHistoryIndex = 0;
+            updateUndoRedoButtons();
+
+            updateLiveModalPreview();
+            openModal('bbcode-modal');
+        }
+
+        function pushEditorHistory(val) {
+            if (editorHistoryIndex < editorHistory.length - 1) {
+                editorHistory = editorHistory.slice(0, editorHistoryIndex + 1);
+            }
+            if (editorHistory[editorHistory.length - 1] !== val) {
+                editorHistory.push(val);
+                editorHistoryIndex = editorHistory.length - 1;
+            }
+            updateUndoRedoButtons();
+        }
+
+        function updateUndoRedoButtons() {
+            const btnUndo = document.getElementById('btn-undo');
+            const btnRedo = document.getElementById('btn-redo');
+            if (btnUndo) btnUndo.disabled = editorHistoryIndex <= 0;
+            if (btnRedo) btnRedo.disabled = editorHistoryIndex >= editorHistory.length - 1;
+        }
+
+        function undoEditorStep() {
+            if (editorHistoryIndex > 0) {
+                editorHistoryIndex--;
+                const textarea = document.getElementById('bbcode-editor-input');
+                const savedScrollTop = textarea ? textarea.scrollTop : 0;
+                const val = editorHistory[editorHistoryIndex];
+                textarea.value = val;
+                textarea.scrollTop = savedScrollTop;
+                updateUndoRedoButtons();
+                updateLiveModalPreview();
+            }
+        }
+
+        function redoEditorStep() {
+            if (editorHistoryIndex < editorHistory.length - 1) {
+                editorHistoryIndex++;
+                const textarea = document.getElementById('bbcode-editor-input');
+                const savedScrollTop = textarea ? textarea.scrollTop : 0;
+                const val = editorHistory[editorHistoryIndex];
+                textarea.value = val;
+                textarea.scrollTop = savedScrollTop;
+                updateUndoRedoButtons();
+                updateLiveModalPreview();
+            }
+        }
+
+        function handleEditorInput() {
+            pushEditorHistory(document.getElementById('bbcode-editor-input').value);
+            updateLiveModalPreview();
+        }
+
+        function handleEditorKeyDown(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+                if (e.shiftKey) {
+                    e.preventDefault();
+                    redoEditorStep();
+                } else {
+                    e.preventDefault();
+                    undoEditorStep();
+                }
+            } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
+                e.preventDefault();
+                redoEditorStep();
+            }
+        }
+
+        function insertBBCode(openTag, closeTag) {
+            const textarea = document.getElementById('bbcode-editor-input');
+            const leftPane = document.querySelector('.split-left-pane');
+            const savedScrollTop = textarea ? textarea.scrollTop : 0;
+            const savedPaneScrollTop = leftPane ? leftPane.scrollTop : 0;
+
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            const replacement = openTag + selectedText + closeTag;
+
+            textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+
+            const newPos = start + replacement.length;
+            textarea.selectionStart = newPos;
+            textarea.selectionEnd = newPos;
+
+            textarea.focus({ preventScroll: true });
+            textarea.scrollTop = savedScrollTop;
+            if (leftPane) leftPane.scrollTop = savedPaneScrollTop;
+
+            pushEditorHistory(textarea.value);
+            updateLiveModalPreview();
+        }
+
+        function copyBBCodeToClipboard() {
+            const code = document.getElementById('bbcode-editor-input').value;
+            navigator.clipboard.writeText(code).then(() => {
+                showNotification("BBCode copied to clipboard!");
+            }).catch(err => {
+                console.error("Copy failed:", err);
+            });
+        }
+
+        function toggleDrawer(drawerId) {
+            const leftPane = document.querySelector('.split-left-pane');
+            const textarea = document.getElementById('bbcode-editor-input');
+            const savedScrollTop = textarea ? textarea.scrollTop : 0;
+            const savedPaneScrollTop = leftPane ? leftPane.scrollTop : 0;
+
+            const drawers = document.querySelectorAll('.tool-drawer');
+            const target = document.getElementById(drawerId);
+            const isOpen = target && (target.style.display === 'flex' || target.style.display === 'block');
+
+            // Close all drawers so only ONE is open at a time
+            drawers.forEach(d => {
+                d.style.display = 'none';
+            });
+
+            if (!isOpen && target) {
+                target.style.display = 'flex';
+            }
+
+            if (textarea) textarea.scrollTop = savedScrollTop;
+            if (leftPane) leftPane.scrollTop = savedPaneScrollTop;
+        }
+
+        /* ==========================================
+           DECORATORS JSON DATA STRUCTURE & RENDERER
+           ========================================== */
+        const DECORATORS_DATA = [
+            { id: "dec_1", name: "Classic Header Box", text: "╭━━━━━━━━━━━━· ☆ ·━━━━━━━━━━━━╮" },
+            { id: "dec_2", name: "Star Divider Line", text: "━━━━━━━━━━━━· ☆ ·━━━━━━━━━━━━" },
+            { id: "dec_3", name: "Double Line Border", text: "╚═══════◄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄►═══════╝" },
+            { id: "dec_4", name: "Sparkle Line", text: "─── ･ ｡ﾟ☆: *.☽ .* :☆ﾟ. ───" },
+            { id: "dec_5", name: "Diamond Divider", text: "◈─────◈─────◈─────◈" },
+            { id: "dec_6", name: "Heart Line Divider", text: "───━━━━━━━ ♥ ━━━━━━━───" }
+        ];
+
+        function renderDecoratorsDrawer() {
+            const container = document.getElementById('decorators-list-container');
+            if (!container) return;
+            container.innerHTML = DECORATORS_DATA.map(d => `
+                <button class="btn-bbcode" onclick="insertDecoratorFromJSON('${d.id}')" title="${d.name}">${d.text}</button>
+            `).join('');
+        }
+
+        function insertDecoratorFromJSON(id) {
+            const item = DECORATORS_DATA.find(d => d.id === id);
+            if (item) {
+                insertBBCode(item.text, '');
+            }
+        }
+
+        /* EXTENDED GRADIENT LOGIC */
+        function updateGradientColorInputs() {
+            const mode = document.getElementById('grad-mode-select').value;
+            const startC = document.getElementById('grad-start-container');
+            const midC = document.getElementById('grad-mid-container');
+            const endC = document.getElementById('grad-end-container');
+
+            if (mode === 'horizontal') {
+                startC.style.display = 'flex';
+                midC.style.display = 'none';
+                endC.style.display = 'flex';
+            } else if (mode === 'three-color') {
+                startC.style.display = 'flex';
+                midC.style.display = 'flex';
+                endC.style.display = 'flex';
+            } else if (mode === 'solid') {
+                startC.style.display = 'flex';
+                midC.style.display = 'none';
+                endC.style.display = 'none';
+            } else {
+                startC.style.display = 'none';
+                midC.style.display = 'none';
+                endC.style.display = 'none';
+            }
+        }
+
+        function hexToRgb(hex) {
+            hex = hex.replace('#', '');
+            if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+            const num = parseInt(hex, 16);
+            return [num >> 16, (num >> 8) & 255, num & 255];
+        }
+
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => {
+                const hex = Math.round(x).toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }).join('').toUpperCase();
+        }
+
+        function hslToHex(h, s, l) {
+            l /= 100;
+            const a = s * Math.min(l, 1 - l) / 100;
+            const f = n => {
+                const k = (n + h / 30) % 12;
+                const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+                return Math.round(255 * color).toString(16).padStart(2, '0');
+            };
+            return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
+        }
+
+        function applyGradientToSelection() {
+            const textarea = document.getElementById('bbcode-editor-input');
+            const leftPane = document.querySelector('.split-left-pane');
+            const savedScrollTop = textarea ? textarea.scrollTop : 0;
+            const savedPaneScrollTop = leftPane ? leftPane.scrollTop : 0;
+
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+
+            if (!selectedText) {
+                alert("Please select some text in the BBCode editor first to apply the colorizer!");
+                return;
+            }
+
+            const mode = document.getElementById('grad-mode-select').value;
+            const startHex = document.getElementById('grad-color-start').value;
+            const midHex = document.getElementById('grad-color-mid').value;
+            const endHex = document.getElementById('grad-color-end').value;
+
+            let result = '';
+            const len = selectedText.length;
+
+            if (mode === 'solid') {
+                for (let i = 0; i < len; i++) {
+                    const char = selectedText[i];
+                    if (char === ' ' || char === '\n' || char === '\r') { result += char; continue; }
+                    result += `[color=${startHex}]${char}[/color]`;
+                }
+            } else if (mode === 'random') {
+                for (let i = 0; i < len; i++) {
+                    const char = selectedText[i];
+                    if (char === ' ' || char === '\n' || char === '\r') { result += char; continue; }
+                    const randomHex = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0').toUpperCase();
+                    result += `[color=${randomHex}]${char}[/color]`;
+                }
+            } else if (mode === 'rainbow') {
+                for (let i = 0; i < len; i++) {
+                    const char = selectedText[i];
+                    if (char === ' ' || char === '\n' || char === '\r') { result += char; continue; }
+                    const hue = Math.floor((i / len) * 360);
+                    const hex = hslToHex(hue, 100, 55);
+                    result += `[color=${hex}]${char}[/color]`;
+                }
+            } else if (mode === 'three-color') {
+                const c1 = hexToRgb(startHex);
+                const cm = hexToRgb(midHex);
+                const c2 = hexToRgb(endHex);
+
+                const half = len / 2;
+                for (let i = 0; i < len; i++) {
+                    const char = selectedText[i];
+                    if (char === ' ' || char === '\n' || char === '\r') { result += char; continue; }
+                    let hex = '';
+                    if (i < half) {
+                        const t = half > 1 ? i / half : 0;
+                        const r = c1[0] + t * (cm[0] - c1[0]);
+                        const g = c1[1] + t * (cm[1] - c1[1]);
+                        const b = c1[2] + t * (cm[2] - c1[2]);
+                        hex = rgbToHex(r, g, b);
+                    } else {
+                        const t = half > 1 ? (i - half) / half : 0;
+                        const r = cm[0] + t * (c2[0] - cm[0]);
+                        const g = cm[1] + t * (c2[1] - cm[1]);
+                        const b = cm[2] + t * (c2[2] - cm[2]);
+                        hex = rgbToHex(r, g, b);
+                    }
+                    result += `[color=${hex}]${char}[/color]`;
+                }
+            } else {
+                const c1 = hexToRgb(startHex);
+                const c2 = hexToRgb(endHex);
+                for (let i = 0; i < len; i++) {
+                    const char = selectedText[i];
+                    if (char === ' ' || char === '\n' || char === '\r') { result += char; continue; }
+                    const t = len > 1 ? i / (len - 1) : 0;
+                    const r = c1[0] + t * (c2[0] - c1[0]);
+                    const g = c1[1] + t * (c2[1] - c1[1]);
+                    const b = c1[2] + t * (c2[2] - c1[2]);
+                    const hex = rgbToHex(r, g, b);
+                    result += `[color=${hex}]${char}[/color]`;
+                }
+            }
+
+            textarea.value = textarea.value.substring(0, start) + result + textarea.value.substring(end);
+            textarea.selectionStart = start;
+            textarea.selectionEnd = start + result.length;
+            textarea.focus({ preventScroll: true });
+            textarea.scrollTop = savedScrollTop;
+            if (leftPane) leftPane.scrollTop = savedPaneScrollTop;
+
+            pushEditorHistory(textarea.value);
+            updateLiveModalPreview();
+        }
+
+        /* PREMADE TEXT DECORATORS */
+        function insertDecorator(type) {
+            let dec = '';
+            if (type === 1) {
+                dec = '╭━━━━━━━━━━━━· ☆ ·━━━━━━━━━━━━╮';
+            } else if (type === 2) {
+                dec = '━━━━━━━━━━━━· ☆ ·━━━━━━━━━━━━';
+            } else if (type === 3) {
+                dec = '╚═══════◄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄►═══════╝';
+            }
+            insertBBCode(dec, '');
+        }
+
+        /* FRIEND LIST BUILDER */
+        function generateFriendListBBCode() {
+            const inputVal = document.getElementById('friends-input-names').value.trim();
+            if (!inputVal) {
+                alert("Please enter at least one FA username!");
+                return;
+            }
+
+            const names = inputVal.split(/[\s,]+/).filter(Boolean);
+            const iconString = names.map(n => `:icon${n.toLowerCase()}:`).join(' ');
+
+            const bbcode = `\n[center]\n╔═════════ Friend List : ═════════╗\n${iconString}\n╚═══════◄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄►═══════╝\n[/center]\n`;
+
+            insertBBCode(bbcode, '');
+        }
+
+        /* LIVE PREVIEW & AUTO-SAVE */
+        function updateLiveModalPreview() {
+            const code = document.getElementById('bbcode-editor-input').value;
+            const iconCount = countFAIcons(code);
+
+            const warningEl = document.getElementById('modal-icon-warning');
+            const warningText = document.getElementById('modal-icon-warning-text');
+
+            if (iconCount > 30) {
+                warningText.textContent = `Notice: You have used ${iconCount} icon tags. FurAffinity displays the first 30 icons as images; icons 31+ render as text links.`;
+                warningEl.style.display = 'flex';
+            } else {
+                warningEl.style.display = 'none';
+            }
+
+            document.getElementById('bbcode-modal-live-preview').innerHTML = parseFABBCode(code);
+
+            if (activeTargetTextId) {
+                rawBBCodeStore[activeTargetTextId] = code;
+                renderElementBBCode(activeTargetTextId);
+            }
+        }
+
+        /* MODAL HELPERS */
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+            document.body.style.overflow = 'hidden';
+            if (id === 'bbcode-modal') {
+                autoResizeEditorOnMobile();
+            }
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+            if (!document.querySelector('.modal-overlay.active')) {
+                document.body.style.overflow = '';
+            }
+        }
+
+        function addComment(event) {
+            event.preventDefault();
+            const input = document.getElementById('new-comment-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const dispName = document.getElementById('target-displayname').textContent;
+            const avatarSrc = document.getElementById('profile-avatar-img').src;
+
+            const container = document.getElementById('comments-container');
+            const newComment = document.createElement('div');
+            newComment.className = 'comment_container';
+            newComment.innerHTML = `
+                <div class="comment-avatar">
+                    <img src="${avatarSrc}" alt="User">
+                </div>
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="comment-username"><span class="symbol">~</span>${dispName}</span>
+                        <span class="comment-date">Just now</span>
+                    </div>
+                    <div class="comment-text">${parseFABBCode(text)}</div>
+                </div>
+            `;
+            container.prepend(newComment);
+            input.value = '';
+        }
+
+        function resetSampleData() {
+            rawBBCodeStore['target-description'] = `[center]\n[b][color=#FF7E70]Z[/color][color=#D46980]e[/color][color=#AA5491]r[/color][color=#7F3FA1]o[/color] [color=#2A15C3]G[/color][color=#0000D3]e[/color][color=#2A15C3]n[/color][color=#552AB2]e[/color][color=#7F3FA1]s[/color][color=#AA5491]i[/color][color=#D46980]s[/color][/b], at ur service~\nEN/IT/ES | he/his | Artist of many kinks\n\n[b]Commissions:[/b] CLOSED | [b]Trades:[/b] CLOSED\n\nI'm a 2D/3D artist, writer and commissioner!\n[/center]`;
+            rawBBCodeStore['target-journal-body'] = "Yeah....quite weird of me doing a journal, BUT, the artist seems to be having those maws~\n\n[url=https://www.furaffinity.net/view/66455052/]https://www.furaffinity.net/view/66455052/[/url]";
+
+            Object.keys(rawBBCodeStore).forEach(id => renderElementBBCode(id));
+
+            document.getElementById('target-usertitle').textContent = "a dragon, I guess";
+            document.getElementById('target-journal-title').textContent = "Free raffle";
+
+            document.getElementById('profile-banner-img').src = "https://d.furaffinity.net/art/z3r0gt/1770765980/profile_banner.jpg";
+            document.getElementById('profile-avatar-img').src = "https://a.furaffinity.net/1778122575/z3r0gt.gif";
+            document.getElementById('target-featured-img').src = "https://t.furaffinity.net/65140675@600-1781718076.jpg";
+        }
+    </script>
+<footer id="site-footer">
+  <div class="footer-content">
+    <a href="https://www.furaffinity.net/user/z3r0gt" target="_blank" rel="noopener noreferrer">FA Profile</a> |
+    <a href="https://bsky.app/profile/z3r0g7.bsky.social" target="_blank" rel="noopener noreferrer">Bluesky</a> | 
+    <a href="https://ko-fi.com/z3r0_gt" target="_blank" rel="noopener noreferrer">ko-fi</a>
+  </div>
+  <div class="footer-content">developed by Z3R0_GT and some random IA (yeah... not proud of it )</div>
+</footer>
+</body>
+</html>

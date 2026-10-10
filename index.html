@@ -968,7 +968,7 @@
          ========================================== -->
     <div id="local-warning-bar">
         <i class="bi bi-info-circle-fill"></i>
-        <span data-i18n="warning_banner">This page is only meant for preview, the design itself is different, yet it make give the idea on how might look like, some changes require extra steps from the furaffinity's page itself, ya may look the how to do it</span>
+        <span data-i18n="warning_banner">This page is only meant for preview, the design itself is different, yet it make give the idea on how might look like, some changes require extra steps from the furaffinity's page itself, ya may look the how to do it. Bugs and suggestions to my FA note: ~z3r0gt</span>
     </div>
 
     <!-- ==========================================
@@ -1521,7 +1521,7 @@ Thank you all for the amazing support! :iconz3r0gt:
            ========================================== */
         const TRANSLATIONS = {
             en: {
-                warning_banner: "This page is only meant for preview, the design itself is different, yet it make give the idea on how might look like, some changes require extra steps from the furaffinity's page itself, ya may look the how to do it",
+                warning_banner: "This page is only meant for preview, the design itself is different, yet it make give the idea on how might look like, some changes require extra steps from the furaffinity's page itself, ya may look the how to do it. Bugs and suggestions to my FA note: ~z3r0gt",
                 load_profile_title: "Load Profile from FurAffinity",
                 username_placeholder: "Enter username or URL (e.g. z3r0gt or furaffinity.net/user/z3r0gt)",
                 fetch_btn: "Fetch Profile",
@@ -1554,7 +1554,7 @@ Thank you all for the amazing support! :iconz3r0gt:
                 generate_friends_btn: "Generate Friend List BBCode"
             },
             es: {
-                warning_banner: "Esta página es solo para vista previa, el diseño es diferente pero da una idea de cómo se vería. Algunos cambios requieren pasos adicionales en FurAffinity.",
+                warning_banner: "Esta página es solo para vista previa, el diseño es diferente pero da una idea de cómo se vería. Algunos cambios requieren pasos adicionales en FurAffinity. Errores y sugerencias a mi nota de FA: ~z3r0gt",
                 load_profile_title: "Cargar Perfil desde FurAffinity",
                 username_placeholder: "Ingresa usuario o URL (ej. z3r0gt o furaffinity.net/user/z3r0gt)",
                 fetch_btn: "Obtener Perfil",
@@ -1587,7 +1587,7 @@ Thank you all for the amazing support! :iconz3r0gt:
                 generate_friends_btn: "Generar Lista de Amigos"
             },
             it: {
-                warning_banner: "Questa pagina serve solo per l'anteprima, il design è diverso ma dà un'idea di come potrebbe apparire.",
+                warning_banner: "Questa pagina serve solo per l'anteprima, il design è diverso ma dà un'idea di come potrebbe apparire. Bug e suggerimenti al mio messaggio FA: ~z3r0gt",
                 load_profile_title: "Carica Profilo da FurAffinity",
                 username_placeholder: "Inserisci nome utente o URL (es. z3r0gt o furaffinity.net/user/z3r0gt)",
                 fetch_btn: "Carica Profilo",
@@ -2108,7 +2108,8 @@ Thank you all for the amazing support! :iconz3r0gt:
         }
 
         function copyBBCodeToClipboard() {
-            const code = document.getElementById('bbcode-editor-input').value;
+            const code = document.getElementById('bbcode-editor-input').value + "\n\n[center][size=10][color=#888888]Generated with the [url=https://z3r0gt.github.io/Furaffinty-Preview-Tool/]FurAffinity Profile & Journal BBCode Editor[/url][/color][/size][/center]";
+            
             navigator.clipboard.writeText(code).then(() => {
                 showNotification("BBCode copied to clipboard!");
             }).catch(err => {
